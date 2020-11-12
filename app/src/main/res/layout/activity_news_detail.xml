@@ -62,7 +62,7 @@
 
             </RelativeLayout>
 
-            <android.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -106,13 +106,13 @@
 
                 </LinearLayout>
 
-            </android.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <NestedScrollView
+    <androidx.core.widget.NestedScrollView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"
@@ -126,9 +126,9 @@
             <androidx.cardview.widget.CardView
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:cardCornerRadius="0dp"
-                app:cardElevation="@dimen/cardview_default_elevation"
-                android:layout_height="wrap_content">
+                app:cardElevation="@dimen/cardview_default_elevation">
                 <RelativeLayout
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
@@ -196,7 +196,7 @@
 
         </LinearLayout>
 
-    </NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <FrameLayout
         android:id="@+id/date_behavior"
