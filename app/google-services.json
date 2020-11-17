@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "888676385548",
+    "firebase_url": "https://breaking-news-f4ffb.firebaseio.com",
+    "project_id": "breaking-news-f4ffb",
+    "storage_bucket": "breaking-news-f4ffb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888676385548:android:2c06367bc59ed4ceecff29",
+        "android_client_info": {
+          "package_name": "com.example.breakingnews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888676385548-jtkbjnvuplpu8d338h8sp7dc5hah4k9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXE2VgA8m9QURdweRX0dwzZXgBqj1Se8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888676385548-jtkbjnvuplpu8d338h8sp7dc5hah4k9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
