@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -102,8 +103,18 @@ public class NewsDetailActivity extends AppCompatActivity implements AppBarLayou
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(url);
+        webView.setWebViewClient(new WebViewClient(){
+            //sync cookies
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                Toast.makeText(NewsDetailActivity.this, "Oh no! " + description, Toast.LENGTH_SHORT).show();
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                CookieSyncManager.getInstance().sync();
+            };
+        });
     }
 
     @Override

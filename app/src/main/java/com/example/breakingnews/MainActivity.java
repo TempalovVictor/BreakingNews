@@ -80,9 +80,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public void LoadJson(final String keyword){
 
-        if (errorLayout != null) {
-            errorLayout.setVisibility(View.GONE);
-        }
+        errorLayout.setVisibility(View.GONE);
+
         swipeRefreshLayout.setRefreshing(true);
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         call.enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
-                if (response.isSuccessful() && response.body().getArticles() != null){
+                if (response.isSuccessful() && response.body().getArticles() != null  && response.body().getArticles().size() > 0){
 
                     if (!articles.isEmpty()){
                         articles.clear();
@@ -207,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setQueryHint("Search Latest News...");
+        searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
