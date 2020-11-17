@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         errorMessage = findViewById(R.id.errorMessage);
         btnRetry = findViewById(R.id.btnRetry);
 
-        FacebookSdk.setAutoInitEnabled (true);
-        FacebookSdk.fullyInitialize ();
+        FacebookSdk.setAutoInitEnabled(true);
+        FacebookSdk.fullyInitialize();
         FacebookSdk.setIsDebugEnabled(true);
         FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS);
 
@@ -226,6 +226,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         searchMenuItem.getIcon().setVisible(false, false);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_privacy_policy:
+                openPrivacyPolicy();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openPrivacyPolicy() {
+        Intent intent = new Intent(this, PrivacyPolicy.class);
+        startActivity(intent);
     }
 
     @Override
