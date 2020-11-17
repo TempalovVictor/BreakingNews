@@ -1,8 +1,6 @@
 package com.example.breakingnews;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,9 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +26,10 @@ import com.example.breakingnews.api.ApiInterface;
 import com.example.breakingnews.models.Article;
 import com.example.breakingnews.models.News;
 
+import com.facebook.FacebookSdk;
+import com.facebook.LoggingBehavior;
+import com.facebook.appevents.AppEventsLogger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String API_KEY = "44aa2f2aaeff4c41a1d29b2dc0e39234";
     private RecyclerView recyclerView;
@@ -51,6 +51,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private ImageView errorImage;
     private TextView errorTitle, errorMessage;
     private Button btnRetry;
+
+/*    AppEventsLogger logger = AppEventsLogger.newLogger(this);
+
+    public void logSentFriendRequestEvent () {
+        logger.logEvent("sentFriendRequest");
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +82,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         errorMessage = findViewById(R.id.errorMessage);
         btnRetry = findViewById(R.id.btnRetry);
 
+        FacebookSdk.setAutoInitEnabled (true);
+        FacebookSdk.fullyInitialize ();
+        FacebookSdk.setIsDebugEnabled(true);
+        FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS);
+
+        AppEventsLogger logger = AppEventsLogger.newLogger(this);
+
+        //logger.logEvent("sentFriendRequest");
+        logger.logEvent("testEvent");
     }
 
-    public void LoadJson(final String keyword){
+    public void LoadJson(final String keyword) {
 
         errorLayout.setVisibility(View.GONE);
 
@@ -91,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         Call<News> call;
 
-        if (keyword.length() > 0 ){
+        if (keyword.length() > 0) {
             call = apiInterface.getNewsSearch(keyword, language, "publishedAt", API_KEY);
         } else {
             call = apiInterface.getNews(country, API_KEY);
@@ -100,9 +115,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         call.enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
-                if (response.isSuccessful() && response.body().getArticles() != null  && response.body().getArticles().size() > 0){
+                if (response.isSuccessful() && response.body().getArticles() != null && response.body().getArticles().size() > 0) {
 
-                    if (!articles.isEmpty()){
+                    if (!articles.isEmpty()) {
                         articles.clear();
                     }
 
@@ -138,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     showErrorMessage(
                             R.mipmap.no_result,
                             "No Result",
-                            "Please Try Again!\n"+
+                            "Please Try Again!\n" +
                                     errorCode);
 
                 }
@@ -151,16 +166,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 showErrorMessage(
                         R.mipmap.oops,
                         "Oops..",
-                        "Network failure, Please Try Again\n"+
+                        "Network failure, Please Try Again\n" +
                                 t.toString());
             }
         });
-
     }
 
 
-
-    private void initListener(){
+    private void initListener() {
 
         adapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
@@ -171,27 +184,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 Article article = articles.get(position);
                 intent.putExtra("url", article.getUrl());
                 intent.putExtra("title", article.getTitle());
-                intent.putExtra("img",  article.getUrlToImage());
-                intent.putExtra("date",  article.getPublishedAt());
-                intent.putExtra("source",  article.getSource().getName());
-                intent.putExtra("author",  article.getAuthor());
-
-/*                Pair<View, String> pair = Pair.create((View)imageView, ViewCompat.getTransitionName(imageView));
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        MainActivity.this,
-                        pair
-                );
-
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    startActivity(intent, optionsCompat.toBundle());
-                }else {*/
+                intent.putExtra("img", article.getUrlToImage());
+                intent.putExtra("date", article.getPublishedAt());
+                intent.putExtra("source", article.getSource().getName());
+                intent.putExtra("author", article.getAuthor());
                 startActivity(intent);
-//                }
-
             }
         });
-
     }
 
 
@@ -210,10 +209,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query.length() > 2){
+                if (query.length() > 2) {
                     onLoadingSwipeRefresh(query);
-                }
-                else {
+                } else {
                     Toast.makeText(MainActivity.this, "Type more than two letters!", Toast.LENGTH_SHORT).show();
                 }
                 return false;
@@ -235,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         LoadJson("");
     }
 
-    private void onLoadingSwipeRefresh(final String keyword){
+    private void onLoadingSwipeRefresh(final String keyword) {
 
         swipeRefreshLayout.post(
                 new Runnable() {
@@ -245,10 +243,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     }
                 }
         );
-
     }
 
-    private void showErrorMessage(int imageView, String title, String message){
+    private void showErrorMessage(int imageView, String title, String message) {
 
         if (errorLayout.getVisibility() == View.GONE) {
             errorLayout.setVisibility(View.VISIBLE);
@@ -264,7 +261,5 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 onLoadingSwipeRefresh("");
             }
         });
-
     }
-
 }

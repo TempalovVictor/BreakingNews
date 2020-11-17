@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Breaking news</string>
+    <string name="facebook_app_id">373692963856075</string>
+    <string name="fb_login_protocol_scheme">fb373692963856075</string>
 </resources>
