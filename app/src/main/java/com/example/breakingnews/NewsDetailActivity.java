@@ -2,13 +2,17 @@ package com.example.breakingnews;
 
 import android.content.Intent;
 import android.net.Uri;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieSyncManager;
@@ -24,7 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
-public class NewsDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener{
+public class NewsDetailActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
     private ImageView imageView;
     private TextView appbar_title, appbar_subtitle, date, time, title;
@@ -82,7 +86,7 @@ public class NewsDetailActivity extends AppCompatActivity implements AppBarLayou
         title.setText(mTitle);
 
         String author;
-        if (mAuthor != null){
+        if (mAuthor != null) {
             author = " \u2022 " + mAuthor;
         } else {
             author = "";
@@ -94,7 +98,7 @@ public class NewsDetailActivity extends AppCompatActivity implements AppBarLayou
 
     }
 
-    private void initWebView(String url){
+    private void initWebView(String url) {
         WebView webView = findViewById(R.id.webView);
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -104,16 +108,14 @@ public class NewsDetailActivity extends AppCompatActivity implements AppBarLayou
         webView.getSettings().setDisplayZoomControls(false);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl(url);
-        webView.setWebViewClient(new WebViewClient(){
-            //sync cookies
+        webView.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 
                 Toast.makeText(NewsDetailActivity.this, "Oh no! " + description, Toast.LENGTH_SHORT).show();
             }
-
             public void onPageFinished(WebView view, String url) {
                 CookieSyncManager.getInstance().sync();
-            };
+            }
         });
     }
 
@@ -159,15 +161,13 @@ public class NewsDetailActivity extends AppCompatActivity implements AppBarLayou
 
         int id = item.getItemId();
 
-        if (id == R.id.view_web){
+        if (id == R.id.view_web) {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(mUrl));
             startActivity(i);
             return true;
-        }
-
-        else if (id == R.id.share){
-            try{
+        } else if (id == R.id.share) {
+            try {
 
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plan");
@@ -176,7 +176,7 @@ public class NewsDetailActivity extends AppCompatActivity implements AppBarLayou
                 i.putExtra(Intent.EXTRA_TEXT, body);
                 startActivity(Intent.createChooser(i, "Share with :"));
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(this, "Hmm.. Sorry, \nCannot be share", Toast.LENGTH_SHORT).show();
             }
         }

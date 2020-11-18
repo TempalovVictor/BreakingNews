@@ -60,14 +60,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
                 .apply(requestOptions)
                 .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Drawable> target, boolean isFirstResource) {
 
                         holder.progressBar.setVisibility(View.GONE);
                         return false;
                     }
 
                     @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    public boolean onResourceReady(Drawable resource, Object model,
+                                                   Target<Drawable> target, DataSource dataSource,
+                                                   boolean isFirstResource) {
 
                         holder.progressBar.setVisibility(View.GONE);
                         return false;
@@ -83,7 +86,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         holder.published_at.setText(Utils.DateFormat(model.getPublishedAt()));
         holder.author.setText(model.getAuthor());
 
-
     }
 
     @Override
@@ -91,7 +93,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         return articles.size();
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -105,6 +107,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         ImageView imageView;
         ProgressBar progressBar;
         OnItemClickListener onItemClickListener;
+
         public MyViewHolder(View itemView, OnItemClickListener onItemClickListener) {
 
             super(itemView);

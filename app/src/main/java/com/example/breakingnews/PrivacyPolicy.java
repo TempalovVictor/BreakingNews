@@ -6,9 +6,12 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 public class PrivacyPolicy extends AppCompatActivity {
 
@@ -19,8 +22,14 @@ public class PrivacyPolicy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_policy);
 
-        WebView webView = findViewById(R.id.webView);
+        WebView webView = findViewById(R.id.webViewActivity);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setLoadsImagesAutomatically(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         switch (language) {
             case "ru" :
@@ -45,6 +54,14 @@ public class PrivacyPolicy extends AppCompatActivity {
             }
         };
 
-        webView.setWebViewClient(webViewClient);
+        webView.setWebViewClient(new WebViewClient() {
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                Toast.makeText(PrivacyPolicy.this, "Oh no! " + description, Toast.LENGTH_SHORT).show();
+            }
+            public void onPageFinished(WebView view, String url) {
+                CookieSyncManager.getInstance().sync();
+            }
+        });
     }
 }
